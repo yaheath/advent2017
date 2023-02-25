@@ -56,7 +56,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn day05_test() {
+    fn day06_test() {
         let mut b = "0\t2\t7\t0".parse::<Bank>().unwrap();
         realloc(&mut b);
         assert_eq!(b.0, vec![2_i64, 4, 1, 2]);

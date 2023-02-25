@@ -107,7 +107,7 @@ mod tests {
     use advent_lib::read::test_input;
 
     #[test]
-    fn day02_test() {
+    fn day07_test() {
         let input: Vec<Input> = test_input(include_str!("day07.testinput"));
         assert_eq!(part1(&input), "tknk".to_string());
         assert_eq!(part2(&input), 60);
