@@ -1,72 +1,94 @@
+use std::cmp::Reverse;
+use std::collections::HashMap;
 use std::str::FromStr;
 use std::vec::Vec;
+use itertools::Itertools;
+use lazy_static::lazy_static;
+use regex::Regex;
 use advent_lib::read::read_input;
 
+type Coord3D = (i64, i64, i64);
+
 #[derive(Clone)]
-struct Generator {
-    factor: u64,
-    current: u64,
-    mult: u64,
+struct Particle {
+    pos: Coord3D,
+    vel: Coord3D,
+    acc: Coord3D,
 }
 
-impl Generator {
-    fn new(generator: char, seed: u64) -> Self {
-        let (factor, mult) = match generator {
-            'A' => (16807, 4),
-            'B' => (48271, 8),
-            _ => panic!(),
-        };
-        Self { factor, mult, current: seed }
-    }
-    fn next(&mut self) -> u64 {
-        self.current = (self.current * self.factor) % 2147483647;
-        self.current
-    }
-    fn next2(&mut self) -> u64 {
-        loop {
-            self.current = (self.current * self.factor) % 2147483647;
-            if self.current % self.mult == 0 {
-                break;
-            }
-        }
-        self.current
-    }
-}
-
-impl FromStr for Generator {
+impl FromStr for Particle {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let items:Vec<&str> = s.split(' ').collect();
-        let generator = items[1].chars().next().unwrap();
-        let seed = items[4].parse::<u64>().unwrap();
-        Ok(Self::new(generator, seed))
+        lazy_static! {
+            static ref RE: Regex = Regex::new(
+                r"p=.(-?\d+),(-?\d+),(-?\d+)., v=.(-?\d+),(-?\d+),(-?\d+)., a=.(-?\d+),(-?\d+),(-?\d+)"
+            ).unwrap();
+        }
+        if let Some(caps) = RE.captures(s) {
+            let px = caps.get(1).unwrap().as_str().parse::<i64>().unwrap();
+            let py = caps.get(2).unwrap().as_str().parse::<i64>().unwrap();
+            let pz = caps.get(3).unwrap().as_str().parse::<i64>().unwrap();
+            let vx = caps.get(4).unwrap().as_str().parse::<i64>().unwrap();
+            let vy = caps.get(5).unwrap().as_str().parse::<i64>().unwrap();
+            let vz = caps.get(6).unwrap().as_str().parse::<i64>().unwrap();
+            let ax = caps.get(7).unwrap().as_str().parse::<i64>().unwrap();
+            let ay = caps.get(8).unwrap().as_str().parse::<i64>().unwrap();
+            let az = caps.get(9).unwrap().as_str().parse::<i64>().unwrap();
+            Ok(Particle {
+                pos: (px, py, pz),
+                vel: (vx, vy, vz),
+                acc: (ax, ay, az),
+            })
+        }
+        else {
+            Err(())
+        }
     }
 }
 
-fn part1(input: &Vec<Generator>) -> usize {
-    let mut gen0 = input[0].clone();
-    let mut gen1 = input[1].clone();
-    (0..40_000_000).filter(|_| {
-        let v0 = gen0.next();
-        let v1 = gen1.next();
-        (v0 & 0xffff) == (v1 & 0xffff)
-    })
-    .count()
+impl Particle {
+    fn update(&mut self) {
+        self.vel.0 += self.acc.0;
+        self.vel.1 += self.acc.1;
+        self.vel.2 += self.acc.2;
+        self.pos.0 += self.vel.0;
+        self.pos.1 += self.vel.1;
+        self.pos.2 += self.vel.2;
+    }
 }
 
-fn part2(input: &Vec<Generator>) -> usize {
-    let mut gen0 = input[0].clone();
-    let mut gen1 = input[1].clone();
-    (0..5_000_000).filter(|_| {
-        let v0 = gen0.next2();
-        let v1 = gen1.next2();
-        (v0 & 0xffff) == (v1 & 0xffff)
-    })
-    .count()
+fn part1(input: &Vec<Particle>) -> usize {
+    input.iter()
+        .enumerate()
+        .map(|(idx, p)| (idx, p.acc.0.abs() + p.acc.1.abs() + p.acc.2.abs()))
+        .min_by_key(|(_, v)| *v)
+        .map(|(idx, _)| idx)
+        .unwrap()
+}
+
+fn part2(input: &Vec<Particle>) -> usize {
+    let mut particles = input.clone();
+
+    for _ in 0..1000 {
+        let mut positions: HashMap<Coord3D, Vec<usize>> = HashMap::new();
+        for (idx, p) in particles.iter_mut().enumerate() {
+            p.update();
+            positions.entry(p.pos)
+                .and_modify(|e| e.push(idx))
+                .or_insert(vec![idx]);
+        }
+        for idx in positions.values()
+            .filter(|v| v.len() > 1)
+            .flatten()
+            .sorted_by_key(|v| Reverse(*v)) {
+                particles.remove(*idx);
+        }
+    }
+    particles.len()
 }
 
 fn main() {
-    let input: Vec<Generator> = read_input();
+    let input: Vec<Particle> = read_input();
     println!("Part 1: {}", part1(&input));
     println!("Part 2: {}", part2(&input));
 }
@@ -74,29 +96,13 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use advent_lib::read::test_input;
 
     #[test]
-    fn day15_test() {
-        let mut ga = Generator::new('A', 65);
-        assert_eq!(ga.next(), 1092455);
-        assert_eq!(ga.next(), 1181022009);
-        assert_eq!(ga.next(), 245556042);
-        assert_eq!(ga.next(), 1744312007);
-        assert_eq!(ga.next(), 1352636452);
-
-        let input = vec![
-            Generator::new('A', 65),
-            Generator::new('B', 8921),
-        ];
-        assert_eq!(part1(&input), 588);
-
-        let mut ga = Generator::new('A', 65);
-        assert_eq!(ga.next2(), 1352636452);
-        assert_eq!(ga.next2(), 1992081072);
-        assert_eq!(ga.next2(), 530830436);
-        assert_eq!(ga.next2(), 1980017072);
-        assert_eq!(ga.next2(), 740335192);
-
-        assert_eq!(part2(&input), 309);
+    fn day20_test() {
+        let input: Vec<Particle> = test_input(include_str!("day20.testinput"));
+        assert_eq!(part1(&input), 0);
+        let input: Vec<Particle> = test_input(include_str!("day20.testinput2"));
+        assert_eq!(part2(&input), 1);
     }
 }
