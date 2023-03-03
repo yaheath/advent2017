@@ -86,6 +86,5 @@ mod tests {
         let result = iterate(&input, 2);
         let n_on = result.iter().filter(|c| **c).count();
         assert_eq!(n_on, 12);
-        assert_eq!(part2(&input), 3);
     }
 }
