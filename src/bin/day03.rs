@@ -1,7 +1,7 @@
 use std::vec::Vec;
 use itertools::Itertools;
-use advent_lib::read::read_input;
-use advent_lib::infinite_grid::InfiniteGrid;
+use ya_advent_lib::read::read_input;
+use ya_advent_lib::infinite_grid::InfiniteGrid;
 
 fn calc(target: i64) -> (i64, i64) {
     if target <= 1 {

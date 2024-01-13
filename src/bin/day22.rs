@@ -1,6 +1,6 @@
 use std::vec::Vec;
-use advent_lib::read::read_input;
-use advent_lib::infinite_grid::InfiniteGrid;
+use ya_advent_lib::read::read_input;
+use ya_advent_lib::infinite_grid::InfiniteGrid;
 
 #[derive(Clone, Copy, Eq, PartialEq)]
 enum Dir {
@@ -142,7 +142,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day22_test() {

@@ -1,7 +1,7 @@
 use std::collections::{HashMap, VecDeque};
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Clone, Copy)]
 enum RI {
@@ -61,11 +61,11 @@ enum RunResult {
 
 struct VM<'a> {
     registers: HashMap<char, i64>,
-    program: &'a Vec<Instruction>,
+    program: &'a [Instruction],
     pc: i64,
 }
 impl<'a> VM<'a> {
-    fn new(program: &'a Vec<Instruction>, id: i64) -> Self {
+    fn new(program: &'a [Instruction], id: i64) -> Self {
         let registers = HashMap::from_iter([('p', id)]);
         Self { registers, program, pc: 0 }
     }
@@ -132,7 +132,7 @@ impl<'a> VM<'a> {
     }
 }
 
-fn part1(input: &Vec<Instruction>) -> i64 {
+fn part1(input: &[Instruction]) -> i64 {
     let mut vm = VM::new(input, 0);
     let mut freq = 0_i64;
     loop {
@@ -166,7 +166,7 @@ enum WorkerResult {
 }
 
 impl<'a> Worker<'a> {
-    fn new(program: &'a Vec<Instruction>, id: i64) -> Self {
+    fn new(program: &'a [Instruction], id: i64) -> Self {
         Self {
             vm: VM::new(program, id),
             queue: VecDeque::new(),
@@ -218,7 +218,7 @@ impl<'a> Worker<'a> {
     }
 }
 
-fn part2(input: &Vec<Instruction>) -> i64 {
+fn part2(input: &[Instruction]) -> i64 {
     let mut vm0 = Worker::new(input, 0);
     let mut vm1 = Worker::new(input, 1);
     while !vm0.is_blocked() || !vm1.is_blocked() {
@@ -237,7 +237,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day18_test() {

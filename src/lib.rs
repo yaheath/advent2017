@@ -1,6 +1,6 @@
 use std::vec::Vec;
 
-fn reverse(list: &mut Vec<u8>, start: usize, len: usize) {
+fn reverse_section(list: &mut [u8], start: usize, len: usize) {
     if len <= 1 { return; }
     for n in 0..len/2 {
         let i = (start + n) % list.len();
@@ -9,13 +9,13 @@ fn reverse(list: &mut Vec<u8>, start: usize, len: usize) {
     }
 }
 
-pub fn knot_hash_raw(list: &mut Vec<u8>, lengths: &Vec<usize>, rounds: usize) {
+pub fn knot_hash_raw(list: &mut [u8], lengths: &[usize], rounds: usize) {
     let mut current_pos = 0usize;
     let mut skip_size = 0usize;
     //println!("{list:?}");
     for _ in 0..rounds {
         for l in lengths {
-            reverse(list, current_pos, *l);
+            reverse_section(list, current_pos, *l);
             //println!("{list:?}");
             current_pos += l + skip_size;
             current_pos %= list.len();

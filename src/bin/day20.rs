@@ -5,7 +5,7 @@ use std::vec::Vec;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use regex::Regex;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 type Coord3D = (i64, i64, i64);
 
@@ -57,7 +57,7 @@ impl Particle {
     }
 }
 
-fn part1(input: &Vec<Particle>) -> usize {
+fn part1(input: &[Particle]) -> usize {
     input.iter()
         .enumerate()
         .map(|(idx, p)| (idx, p.acc.0.abs() + p.acc.1.abs() + p.acc.2.abs()))
@@ -66,8 +66,8 @@ fn part1(input: &Vec<Particle>) -> usize {
         .unwrap()
 }
 
-fn part2(input: &Vec<Particle>) -> usize {
-    let mut particles = input.clone();
+fn part2(input: &[Particle]) -> usize {
+    let mut particles = input.to_owned();
 
     for _ in 0..1000 {
         let mut positions: HashMap<Coord3D, Vec<usize>> = HashMap::new();
@@ -96,7 +96,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day20_test() {

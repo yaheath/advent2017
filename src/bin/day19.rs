@@ -1,6 +1,6 @@
 use std::vec::Vec;
-use advent_lib::read::read_input;
-use advent_lib::grid::Grid;
+use ya_advent_lib::read::read_input;
+use ya_advent_lib::grid::Grid;
 
 #[derive(Clone, Copy, Eq, PartialEq)]
 enum Cell {
@@ -11,15 +11,21 @@ enum Cell {
     Label(char),
 }
 
-fn setup(input: &Vec<String>) -> Grid<Cell> {
-    Grid::from_input(input, Cell::Empty, 1, |c| match c {
-        ' ' => Cell::Empty,
-        '|' => Cell::Vert,
-        '-' => Cell::Horiz,
-        '+' => Cell::Corner,
-        'A'..='Z' => Cell::Label(c),
-        _ => panic!(),
-    })
+impl From<char> for Cell {
+    fn from(c: char) -> Self {
+        match c {
+            ' ' => Cell::Empty,
+            '|' => Cell::Vert,
+            '-' => Cell::Horiz,
+            '+' => Cell::Corner,
+            'A'..='Z' => Cell::Label(c),
+            _ => panic!(),
+        }
+    }
+}
+
+fn setup(input: &[String]) -> Grid<Cell> {
+    Grid::from_input(input, Cell::Empty, 1)
 }
 
 #[derive(Clone, Copy, Eq, PartialEq)]
@@ -109,7 +115,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day19_test() {

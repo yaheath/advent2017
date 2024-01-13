@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 enum DanceMove {
     Spin(usize),
@@ -45,7 +45,7 @@ impl FromStr for DanceMoves {
     }
 }
 
-fn dance(moves: &Vec<DanceMove>, mut progs: Vec<char>) -> Vec<char> {
+fn dance(moves: &[DanceMove], progs: &mut [char]) -> Vec<char> {
     let n_progs = progs.len();
     let mut front: usize = 0;
     for m in moves {
@@ -71,12 +71,12 @@ fn dance(moves: &Vec<DanceMove>, mut progs: Vec<char>) -> Vec<char> {
         .collect()
 }
 
-fn dances(moves: &Vec<DanceMove>, n_progs: usize, n_dances: usize) -> String {
+fn dances(moves: &[DanceMove], n_progs: usize, n_dances: usize) -> String {
     let mut progs: Vec<char> = Vec::from_iter('a'..(b'a' + n_progs as u8) as char);
     let mut patterns: HashMap<Vec<char>, usize> = HashMap::new();
     patterns.insert(progs.clone(), 0);
     for i in 1..=n_dances {
-        progs = dance(moves, progs);
+        progs = dance(moves, &mut progs);
         if i == n_dances { break; }
         if patterns.contains_key(&progs) {
             let rpt_start = patterns[&progs];
@@ -90,11 +90,11 @@ fn dances(moves: &Vec<DanceMove>, n_progs: usize, n_dances: usize) -> String {
     progs.iter().collect()
 }
 
-fn part1(input: &Vec<DanceMove>) -> String {
+fn part1(input: &[DanceMove]) -> String {
     dances(input, 16, 1)
 }
 
-fn part2(input: &Vec<DanceMove>) -> String {
+fn part2(input: &[DanceMove]) -> String {
     dances(input, 16, 1_000_000_000)
 }
 

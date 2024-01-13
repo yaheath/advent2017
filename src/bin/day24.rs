@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Clone, Hash, Eq, PartialEq)]
 struct Component {
@@ -67,7 +67,7 @@ impl Bridge {
     }
 }
 
-fn build_all(input: &Vec<Component>) -> HashSet<Bridge> {
+fn build_all(input: &[Component]) -> HashSet<Bridge> {
     let mut set: HashSet<Bridge> = HashSet::new();
     let mut queue: Vec<Bridge> = Vec::from_iter(
         input.iter()
@@ -107,7 +107,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day24_test() {

@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use std::str::FromStr;
 use std::vec::Vec;
 use itertools::Itertools;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 struct Passphrase(Vec<String>);
 impl FromStr for Passphrase {
@@ -24,11 +24,11 @@ impl Passphrase {
     }
 }
 
-fn part1(input: &Vec<Passphrase>) -> usize {
+fn part1(input: &[Passphrase]) -> usize {
     input.iter().filter(|p| p.is_valid()).count()
 }
 
-fn part2(input: &Vec<Passphrase>) -> usize {
+fn part2(input: &[Passphrase]) -> usize {
     input.iter().filter(|p| p.is_valid2()).count()
 }
 

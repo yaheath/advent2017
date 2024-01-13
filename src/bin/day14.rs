@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::vec::Vec;
 use lazy_static::lazy_static;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 use advent2017::knot_hash;
 
 lazy_static! {

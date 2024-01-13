@@ -1,7 +1,7 @@
 use std::vec::Vec;
 use std::iter::Iterator;
 use std::str::FromStr;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 enum GG {
     Group(Box<Group>),
@@ -76,11 +76,11 @@ fn count_canceled(group: &Group) -> i64 {
         .sum()
 }
 
-fn part1(input: &Vec<Group>) -> i64 {
+fn part1(input: &[Group]) -> i64 {
     score(&input[0])
 }
 
-fn part2(input: &Vec<Group>) -> i64 {
+fn part2(input: &[Group]) -> i64 {
     count_canceled(&input[0])
 }
 

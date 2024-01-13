@@ -1,15 +1,15 @@
 use std::vec::Vec;
 use itertools::Itertools;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
-fn part1(nums: &Vec<i64>) -> i64 {
+fn part1(nums: &[i64]) -> i64 {
     nums
         .iter()
         .circular_tuple_windows()
         .fold(0, |sum, (a, b)| if a == b { sum + a } else { sum })
 }
 
-fn part2(nums: &Vec<i64>) -> i64 {
+fn part2(nums: &[i64]) -> i64 {
     let mid = nums.len() / 2;
     nums.iter()
         .enumerate()

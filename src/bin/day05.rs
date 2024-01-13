@@ -1,8 +1,8 @@
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
-fn part1(input: &Vec<i64>) -> usize {
-    let mut list = input.clone();
+fn part1(input: &[i64]) -> usize {
+    let mut list = input.to_owned();
     let mut steps = 0_usize;
     let mut ip = 0_i64;
     while ip >= 0 && ip < list.len() as i64 {
@@ -14,8 +14,8 @@ fn part1(input: &Vec<i64>) -> usize {
     steps
 }
 
-fn part2(input: &Vec<i64>) -> usize {
-    let mut list = input.clone();
+fn part2(input: &[i64]) -> usize {
+    let mut list = input.to_owned();
     let mut steps = 0_usize;
     let mut ip = 0_i64;
     while ip >= 0 && ip < list.len() as i64 {
@@ -41,7 +41,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day05_test() {

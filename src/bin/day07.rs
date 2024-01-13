@@ -4,7 +4,7 @@ use std::vec::Vec;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use regex::Regex;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Clone, Debug)]
 struct Input {
@@ -37,7 +37,7 @@ impl FromStr for Input {
     }
 }
 
-fn part1(input: &Vec<Input>) -> String {
+fn part1(input: &[Input]) -> String {
     let mut parented: HashSet<String> = HashSet::new();
     let all_nodes: HashSet<String> = HashSet::from_iter(
         input.iter().map(|r| &r.name).cloned()
@@ -78,7 +78,7 @@ fn rebalance(node_name: &String, tree: &HashMap<String, &Input>) -> Option<(Stri
     }
 }
 
-fn part2(input: &Vec<Input>) -> i64 {
+fn part2(input: &[Input]) -> i64 {
     let mut parented: HashSet<String> = HashSet::new();
     let mut tree: HashMap<String, &Input> = HashMap::new();
     input.iter().for_each(|r| {
@@ -104,7 +104,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day07_test() {

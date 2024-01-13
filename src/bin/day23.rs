@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
-use advent_lib::math::is_prime;
+use ya_advent_lib::read::read_input;
+use ya_advent_lib::math::is_prime;
 
 #[derive(Clone, Copy)]
 enum RI {
@@ -55,12 +55,12 @@ enum RunResult {
 
 struct VM<'a> {
     registers: HashMap<char, i64>,
-    program: &'a Vec<Instruction>,
+    program: &'a [Instruction],
     pc: i64,
     trap: Option<&'a mut dyn FnMut(&'a Instruction, &HashMap<char, i64>) -> bool>,
 }
 impl<'a> VM<'a> {
-    fn new(program: &'a Vec<Instruction>, id: i64) -> Self {
+    fn new(program: &'a [Instruction], id: i64) -> Self {
         let registers = HashMap::from_iter([('p', id)]);
         Self { registers, program, pc: 0, trap: None }
     }
@@ -127,7 +127,7 @@ impl<'a> VM<'a> {
     }
 }
 
-fn part1(input: &Vec<Instruction>) -> usize {
+fn part1(input: &[Instruction]) -> usize {
     let mut vm = VM::new(input, 0);
     let mut mul_count = 0;
     let mut trap = |inst, _:&HashMap<char, i64>| match inst {
@@ -139,7 +139,7 @@ fn part1(input: &Vec<Instruction>) -> usize {
     mul_count
 }
 
-fn part2(input: &Vec<Instruction>) -> usize {
+fn part2(input: &[Instruction]) -> usize {
     let mut vm = VM::new(input, 0);
 
     // break when it gets to the "set f 1" instruction, at

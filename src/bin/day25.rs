@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Copy, Clone, Eq, PartialEq)]
 enum Bit {
@@ -137,7 +137,7 @@ struct Program {
     checksum_step: usize,
 }
 impl Program {
-    fn from_input(input: &Vec<Input>) -> Self {
+    fn from_input(input: &[Input]) -> Self {
         let mut iter = input.iter().peekable();
         let mut initial_state: Option<char> = None;
         let mut checksum_step: Option<usize> = None;
@@ -175,7 +175,7 @@ struct TuringMachine {
     cursor: i64,
 }
 impl TuringMachine {
-    fn from_input(input: &Vec<Input>) -> Self {
+    fn from_input(input: &[Input]) -> Self {
         let program = Program::from_input(input);
         Self {
             tape: HashMap::new(),
@@ -200,7 +200,7 @@ impl TuringMachine {
     }
 }
 
-fn part1(input: &Vec<Input>) -> usize {
+fn part1(input: &[Input]) -> usize {
     let mut tm = TuringMachine::from_input(input);
     for _ in 0..tm.program.checksum_step {
         tm.step();
@@ -216,7 +216,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day25_test() {

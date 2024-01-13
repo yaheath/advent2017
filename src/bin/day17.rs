@@ -1,6 +1,6 @@
 use std::vec::Vec;
 use linked_list::LinkedList;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 fn part1(steps: usize) -> usize {
     let mut ring: LinkedList<usize> = LinkedList::new();

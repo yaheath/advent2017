@@ -2,7 +2,7 @@ use std::str::FromStr;
 use std::vec::Vec;
 use itertools::Itertools;
 use itertools::MinMaxResult::MinMax;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 struct Row(Vec<i64>);
 impl FromStr for Row {
@@ -12,7 +12,7 @@ impl FromStr for Row {
     }
 }
 
-fn part1(input: &Vec<Row>) -> i64 {
+fn part1(input: &[Row]) -> i64 {
     input
         .iter()
         .map(|row| match row.0.iter().minmax() {
@@ -22,7 +22,7 @@ fn part1(input: &Vec<Row>) -> i64 {
         .sum()
 }
 
-fn part2(input: &Vec<Row>) -> i64 {
+fn part2(input: &[Row]) -> i64 {
     input
         .iter()
         .flat_map(|row|
@@ -44,7 +44,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day02_test() {

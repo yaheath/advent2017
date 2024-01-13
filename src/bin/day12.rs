@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 struct Input {
     program: usize,
@@ -28,7 +28,7 @@ fn get_neighbors(node: usize, map: &HashMap<usize, Vec<usize>>, traversed: &mut 
     }
 }
 
-fn part1(input: &Vec<Input>) -> usize {
+fn part1(input: &[Input]) -> usize {
     let map: HashMap<usize, Vec<usize>> = HashMap::from_iter(
         input.iter().map(|row| (row.program, row.neighbors.clone()))
     );
@@ -37,7 +37,7 @@ fn part1(input: &Vec<Input>) -> usize {
     neighbors.len()
 }
 
-fn part2(input: &Vec<Input>) -> usize {
+fn part2(input: &[Input]) -> usize {
     let map: HashMap<usize, Vec<usize>> = HashMap::from_iter(
         input.iter().map(|row| (row.program, row.neighbors.clone()))
     );
@@ -64,7 +64,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day12_test() {

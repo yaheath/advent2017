@@ -1,6 +1,6 @@
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Clone)]
 struct Generator {
@@ -43,7 +43,7 @@ impl FromStr for Generator {
     }
 }
 
-fn part1(input: &Vec<Generator>) -> usize {
+fn part1(input: &[Generator]) -> usize {
     let mut gen0 = input[0].clone();
     let mut gen1 = input[1].clone();
     (0..40_000_000).filter(|_| {
@@ -54,7 +54,7 @@ fn part1(input: &Vec<Generator>) -> usize {
     .count()
 }
 
-fn part2(input: &Vec<Generator>) -> usize {
+fn part2(input: &[Generator]) -> usize {
     let mut gen0 = input[0].clone();
     let mut gen1 = input[1].clone();
     (0..5_000_000).filter(|_| {

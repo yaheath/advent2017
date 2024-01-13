@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::vec::Vec;
 use std::iter::Iterator;
 use std::str::FromStr;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 struct Input {
     layer: usize,
@@ -40,7 +40,7 @@ impl Scanner {
     }
 }
 
-fn part1(input: &Vec<Input>) -> usize {
+fn part1(input: &[Input]) -> usize {
     let map: HashMap<usize, Scanner> = HashMap::from_iter(
         input.iter().map(|i| (i.layer, Scanner::new(i.range)))
     );
@@ -52,7 +52,7 @@ fn part1(input: &Vec<Input>) -> usize {
         .sum()
 }
 
-fn part2(input: &Vec<Input>) -> usize {
+fn part2(input: &[Input]) -> usize {
     let map: HashMap<usize, Scanner> = HashMap::from_iter(
         input.iter().map(|i| (i.layer, Scanner::new(i.range)))
     );
@@ -76,7 +76,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day13_test() {

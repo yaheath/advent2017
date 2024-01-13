@@ -1,5 +1,5 @@
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 use advent2017::{knot_hash, knot_hash_raw};
 
 fn part1(input: &str) -> usize {

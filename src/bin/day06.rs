@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::vec::Vec;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Clone)]
 struct Bank(Vec<i64>);

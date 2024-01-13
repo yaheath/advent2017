@@ -2,8 +2,8 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use std::vec::Vec;
 use lazy_static::lazy_static;
-use advent_lib::read::read_input;
-use advent_lib::grid::Grid;
+use ya_advent_lib::read::read_input;
+use ya_advent_lib::grid::Grid;
 
 struct Input {
     frm: Grid<bool>,
@@ -19,8 +19,8 @@ impl FromStr for Input {
         let tolines: Vec<String> =
             frmto.next().unwrap().split('/').map(|s| s.to_string()).collect();
         Ok(Self {
-            frm: Grid::from_input(&frmlines, false, 0, |c| c == '#'),
-            to: Grid::from_input(&tolines, false, 0, |c| c == '#'),
+            frm: Grid::from_input_map(&frmlines, false, 0, |c| c == '#'),
+            to: Grid::from_input_map(&tolines, false, 0, |c| c == '#'),
         })
     }
 }
@@ -33,7 +33,7 @@ static ref START: Vec<String> = vec![
 ];
 }
 
-fn iterate(input: &Vec<Input>, n_times: usize) -> Grid<bool> {
+fn iterate(input: &[Input], n_times: usize) -> Grid<bool> {
     let mut map: HashMap<Vec<bool>, &Grid<bool>> = HashMap::new();
     for i in input {
         map.insert(i.frm.data().clone(), &i.to);
@@ -45,7 +45,7 @@ fn iterate(input: &Vec<Input>, n_times: usize) -> Grid<bool> {
         map.insert(i.frm.rot180().rot90().data().clone(), &i.to);
         map.insert(i.frm.rot180().rot90().h_flip().data().clone(), &i.to);
     }
-    let mut grid: Grid<bool> = Grid::from_input(&START, false, 0, |c| c == '#');
+    let mut grid: Grid<bool> = Grid::from_input_map(&START, false, 0, |c| c == '#');
     for _ in 0..n_times {
         let splitsize = if grid.x_bounds().end % 2 == 0 { 2 } else { 3 };
         let tiles: Vec<Grid<bool>> = grid.tile_split(splitsize, splitsize)
@@ -59,12 +59,12 @@ fn iterate(input: &Vec<Input>, n_times: usize) -> Grid<bool> {
     grid
 }
 
-fn part1(input: &Vec<Input>) -> usize {
+fn part1(input: &[Input]) -> usize {
     let result = iterate(input, 5);
     result.iter().filter(|c| **c).count()
 }
 
-fn part2(input: &Vec<Input>) -> usize {
+fn part2(input: &[Input]) -> usize {
     let result = iterate(input, 18);
     result.iter().filter(|c| **c).count()
 }
@@ -78,7 +78,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day21_test() {

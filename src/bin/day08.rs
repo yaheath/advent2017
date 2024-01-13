@@ -3,7 +3,7 @@ use std::str::FromStr;
 use std::vec::Vec;
 use lazy_static::lazy_static;
 use regex::Regex;
-use advent_lib::read::read_input;
+use ya_advent_lib::read::read_input;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Op {
@@ -94,19 +94,19 @@ impl VM {
             self.max_reg_value = self.max_reg_value.max(new_val);
         }
     }
-    fn run(&mut self, instructions: &Vec<Input>) {
+    fn run(&mut self, instructions: &[Input]) {
         for i in instructions {
             self.execute_instruction(i);
         }
     }
 }
 
-fn part1(input: &Vec<Input>) -> i64 {
+fn part1(input: &[Input]) -> i64 {
     let mut vm = VM::new();
     vm.run(input);
     *vm.registers.values().max().unwrap()
 }
-fn part2(input: &Vec<Input>) -> i64 {
+fn part2(input: &[Input]) -> i64 {
     let mut vm = VM::new();
     vm.run(input);
     vm.max_reg_value
@@ -121,7 +121,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use advent_lib::read::test_input;
+    use ya_advent_lib::read::test_input;
 
     #[test]
     fn day08_test() {
