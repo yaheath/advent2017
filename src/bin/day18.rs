@@ -32,7 +32,7 @@ enum Instruction {
 impl FromStr for Instruction {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut itr = s.split(" ");
+        let mut itr = s.split(' ');
         let opcode = itr.next().unwrap();
         let x = itr.next().unwrap();
         let a = x.parse::<RI>().unwrap();

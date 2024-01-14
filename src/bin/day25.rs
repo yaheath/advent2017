@@ -36,7 +36,7 @@ impl FromStr for Input {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let words:Vec<&str> = s.split_whitespace().collect();
-        if words.len() == 0 {
+        if words.is_empty() {
             return Ok(Input::Blank);
         }
         match (words[0], words[1]) {

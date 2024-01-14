@@ -43,7 +43,7 @@ fn part2(input: &[Input]) -> usize {
     );
     let mut remaining: HashSet<usize> = HashSet::from_iter(map.keys().cloned());
     let mut ngroups = 0;
-    while remaining.len() > 0 {
+    while !remaining.is_empty() {
         let p = *remaining.iter().next().unwrap();
         let mut group = HashSet::new();
         get_neighbors(p, &map, &mut group);

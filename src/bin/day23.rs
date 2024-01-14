@@ -30,7 +30,7 @@ enum Instruction {
 impl FromStr for Instruction {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut itr = s.split(" ");
+        let mut itr = s.split(' ');
         let opcode = itr.next().unwrap();
         let x = itr.next().unwrap();
         let a = x.parse::<RI>().unwrap();
@@ -53,18 +53,20 @@ enum RunResult {
     Break,
 }
 
+type TrapFunc<'a> = &'a mut dyn FnMut(&'a Instruction, &HashMap<char, i64>) -> bool;
+
 struct VM<'a> {
     registers: HashMap<char, i64>,
     program: &'a [Instruction],
     pc: i64,
-    trap: Option<&'a mut dyn FnMut(&'a Instruction, &HashMap<char, i64>) -> bool>,
+    trap: Option<TrapFunc<'a>>,
 }
 impl<'a> VM<'a> {
     fn new(program: &'a [Instruction], id: i64) -> Self {
         let registers = HashMap::from_iter([('p', id)]);
         Self { registers, program, pc: 0, trap: None }
     }
-    fn set_trap(&mut self, trap: &'a mut dyn FnMut(&'a Instruction, &HashMap<char, i64>) -> bool) {
+    fn set_trap(&mut self, trap: TrapFunc<'a>) {
         self.trap = Some(trap);
     }
     fn step(&mut self) -> RunResult {
@@ -72,13 +74,10 @@ impl<'a> VM<'a> {
             return RunResult::Halt;
         }
         let inst = &self.program[self.pc as usize];
-        match self.trap.as_mut() {
-            Some(trap) => {
-                if (*trap)(&inst, &self.registers) {
-                    return RunResult::Break;
-                }
-            },
-            None => {},
+        if let Some(trap) = self.trap.as_mut() {
+            if (*trap)(inst, &self.registers) {
+                return RunResult::Break;
+            }
         }
         match inst {
             Instruction::Set(x, y) => {
@@ -145,10 +144,7 @@ fn part2(input: &[Instruction]) -> usize {
     // break when it gets to the "set f 1" instruction, at
     // which point the b and c registers contain the range to
     // search
-    let mut trap = |inst, _:&HashMap<char, i64>| match inst {
-            &Instruction::Set(r,_) if r == 'f' => true,
-            _ => false,
-        };
+    let mut trap = |inst, _:&HashMap<char, i64>| matches!(inst, &Instruction::Set('f',_));
     vm.set_reg('a', 1);
     vm.set_trap(&mut trap);
     vm.run();

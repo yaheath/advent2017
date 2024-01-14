@@ -56,8 +56,7 @@ impl FromStr for Group {
 
 fn rscore(group: &Group, level: i64) -> i64 {
     level + group.children.iter()
-        .filter(|gg| matches!(gg, GG::Group(_)))
-        .map(|gg| match gg { GG::Group(g) => g, _ => panic!() })
+        .filter_map(|gg| match gg { GG::Group(g) => Some(g), _ => None })
         .map(|g| rscore(g, level + 1))
         .sum::<i64>()
 }

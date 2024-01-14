@@ -1,3 +1,4 @@
+use std::fmt::Write;
 use std::vec::Vec;
 use ya_advent_lib::read::read_input;
 use advent2017::{knot_hash, knot_hash_raw};
@@ -15,8 +16,10 @@ fn part1(input: &str) -> usize {
 fn part2(input: &str) -> String {
     knot_hash(input)
         .iter()
-        .map(|&n| format!("{n:02x}"))
-        .collect()
+        .fold(String::new(), |mut s, n| {
+            write!(s, "{n:02x}").unwrap();
+            s
+        })
 }
 
 fn main() {

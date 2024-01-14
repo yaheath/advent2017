@@ -60,7 +60,7 @@ impl Virus {
         let yrange = initial_grid.y_bounds();
         Self {
             grid: InfiniteGrid::from_other(
-                &initial_grid,
+                initial_grid,
                 NodeState::Clean,
                 |v| if v {Some(NodeState::Infected)} else {None}
             ),

@@ -45,7 +45,7 @@ mod tests {
 
     #[test]
     fn day05_test() {
-        let input: Vec<i64> = test_input("0\n3\n0\n1\n-3\n".into());
+        let input: Vec<i64> = test_input("0\n3\n0\n1\n-3\n");
         assert_eq!(part1(&input), 5);
         assert_eq!(part2(&input), 10);
     }

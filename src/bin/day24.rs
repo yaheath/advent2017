@@ -42,13 +42,11 @@ impl Bridge {
                     self.0[idx].a
                 }
             }
+            else if self.0[0].a == 0 {
+                self.0[0].b
+            }
             else {
-                if self.0[0].a == 0 {
-                    self.0[0].b
-                }
-                else {
-                    self.0[0].a
-                }
+                self.0[0].a
             };
         if c.a == free || c.b == free {
             Some(self.append(c))
@@ -72,7 +70,7 @@ fn build_all(input: &[Component]) -> HashSet<Bridge> {
     let mut queue: Vec<Bridge> = Vec::from_iter(
         input.iter()
         .filter(|c| c.a == 0 || c.b == 0)
-        .map(|c| Bridge::new(c))
+        .map(Bridge::new)
     );
     queue.iter().for_each(|b| {set.insert(b.clone());});
     while let Some(b) = queue.pop() {

@@ -45,7 +45,7 @@ fn part1(input: &[Input]) -> usize {
         input.iter().map(|i| (i.layer, Scanner::new(i.range)))
     );
     let maxdepth = map.keys().cloned().max().unwrap();
-    (0..=maxdepth).into_iter()
+    (0..=maxdepth)
         .filter(|d| map.contains_key(d))
         .filter(|d| map[d].loc_at(*d) == 0)
         .map(|d| map[&d].range * d)
@@ -58,7 +58,7 @@ fn part2(input: &[Input]) -> usize {
     );
     let maxdepth = map.keys().cloned().max().unwrap();
     for delay in 1.. {
-        if (0..=maxdepth).into_iter()
+        if (0..=maxdepth)
                 .filter(|d| map.contains_key(d))
                 .all(|d| map[&d].loc_at(d + delay) != 0) {
             return delay;
@@ -88,7 +88,7 @@ mod tests {
         let vals = [0, 1, 2, 3, 2, 1, 0, 1];
         vals.iter().enumerate().for_each(|(t, v)| assert_eq!(s.loc_at(t), *v));
 
-        let input: Vec<Input> = test_input("0: 3\n1: 2\n4: 4\n6: 4\n".into());
+        let input: Vec<Input> = test_input("0: 3\n1: 2\n4: 4\n6: 4\n");
         assert_eq!(part1(&input), 24);
         assert_eq!(part2(&input), 10);
     }
